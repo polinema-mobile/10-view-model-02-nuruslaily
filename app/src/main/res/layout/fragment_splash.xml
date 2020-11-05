@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="splashViewModel"
+            type="id.putraprima.mvvmlogin.viewmodels.SplashViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
