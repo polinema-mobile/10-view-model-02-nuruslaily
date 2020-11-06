@@ -1,39 +1,35 @@
 package id.putraprima.mvvmlogin.viewmodels;
 
 import android.util.Patterns;
+import android.view.View;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import id.putraprima.mvvmlogin.models.LoggedInUser;
+import id.putraprima.mvvmlogin.models.LoggedIn;
 
 public class LoginViewModel extends ViewModel {
-    public MutableLiveData<LoggedInUser> loggedMutableLiveData = new MutableLiveData<>();
-    public LoggedInUser logged = new LoggedInUser();
+    public MutableLiveData<String> EmailAddress = new MutableLiveData<>();
+    public MutableLiveData<String> Password = new MutableLiveData<>();
 
-    public LiveData<LoggedInUser> getLogged(){
-        return loggedMutableLiveData;
-    }
-    public void login(String username, String password) {
+    private MutableLiveData<LoggedIn> userMutableLiveData;
 
-    }
+    public MutableLiveData<LoggedIn> getUser() {
 
-
-    // A placeholder username validation check
-    private boolean isUserNameValid(String username) {
-        if (username == null) {
-            return false;
+        if (userMutableLiveData == null) {
+            userMutableLiveData = new MutableLiveData<>();
         }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
-        }
+        return userMutableLiveData;
+
     }
 
-    // A placeholder password validation check
-    private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 5;
+    public void onClick(View view) {
+
+        LoggedIn loginUser = new LoggedIn(EmailAddress.getValue(), Password.getValue());
+
+        userMutableLiveData.setValue(loginUser);
+
     }
+
 }

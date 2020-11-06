@@ -12,13 +12,12 @@ import android.view.ViewGroup;
 
 import id.putraprima.mvvmlogin.R;
 import id.putraprima.mvvmlogin.databinding.FragmentHomeBinding;
-import id.putraprima.mvvmlogin.databinding.FragmentLoginBinding;
-import id.putraprima.mvvmlogin.models.LoggedInUser;
+import id.putraprima.mvvmlogin.models.LoggedIn;
 import id.putraprima.mvvmlogin.viewmodels.HomeViewModel;
-import id.putraprima.mvvmlogin.viewmodels.HomeViewModelFactory;
+import id.putraprima.mvvmlogin.viewmodels.LoginViewModel;
 
 public class HomeFragment extends Fragment {
-    private LoggedInUser loggedInUser;
+    private LoggedIn loggedIn;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -27,10 +26,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        FragmentHomeBinding binding = DataBindingUtil.inflate(inflater,R.layout.fragment_home, container, false);
-        HomeViewModelFactory homeViewModelFactory = new HomeViewModelFactory(new ());
-        loggedInUser = new ViewModelProvider(this, homeViewModelFactory).get(HomeViewModel.class);
-        binding.setViewModel(homeViewModel);
+        FragmentHomeBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
+        //loggedIn = new ViewModelProvider(this).get(LoginViewModel.class);
+        //binding.setLoginViewModel(loggedIn);
         binding.setLifecycleOwner(this);
+        return binding.getRoot();
     }
 }
