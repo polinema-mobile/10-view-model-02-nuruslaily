@@ -3,14 +3,22 @@ package id.putraprima.mvvmlogin.models;
 import android.util.Patterns;
 
 public class LoggedIn {
-    private String email;
-    private String password;
+    public String email;
+    public String password;
 
     public LoggedIn() {
     }
 
     public LoggedIn(String email, String password) {
         this.email = email;
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
     }
 

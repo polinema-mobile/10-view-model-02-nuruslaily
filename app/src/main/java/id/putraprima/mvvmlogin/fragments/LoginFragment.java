@@ -24,11 +24,15 @@ import id.putraprima.mvvmlogin.R;
 import id.putraprima.mvvmlogin.databinding.FragmentLoginBinding;
 import id.putraprima.mvvmlogin.models.LoggedIn;
 import id.putraprima.mvvmlogin.viewmodels.LoginViewModel;
+import id.putraprima.mvvmlogin.viewmodels.LoginViewModelFactory;
 
 public class LoginFragment extends Fragment {
     public static String LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
 
     private LoginViewModel loginViewModel;
+    private SavedStateHandle savedStateHandle;
+    FragmentLoginBinding binding;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -41,30 +45,28 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         FragmentLoginBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
         binding.setLifecycleOwner(this);
+        LoginViewModelFactory loginViewModelFactory = new LoginViewModelFactory(new LoggedIn("nuruslaily@gmail.com", "nurus123"));
+        loginViewModel = new ViewModelProvider(this, loginViewModelFactory).get(LoginViewModel.class);
         binding.setLoginViewModel(loginViewModel);
-        loginViewModel.getUser().observe(getViewLifecycleOwner(), new Observer<LoggedIn>() {
-            @Override
-            public void onChanged(@Nullable LoggedIn loggedIn) {
-
-                if (TextUtils.isEmpty(Objects.requireNonNull(loggedIn).getEmail())) {
-                    binding.editTextEmail.setError("Enter an E-Mail Address");
-                    binding.editTextEmail.requestFocus();
-                } else if (!loggedIn.isEmailValid()) {
-                    binding.editTextEmail.setError("Enter a Valid E-mail Address");
-                    binding.editTextEmail.requestFocus();
-                } else if (TextUtils.isEmpty(Objects.requireNonNull(loggedIn).getPassword())) {
-                    binding.editTextPassword.setError("Enter a Password");
-                    binding.editTextPassword.requestFocus();
-                } else if (!loggedIn.isPasswordLengthGreaterThan5()) {
-                    binding.editTextPassword.setError("Enter at least 6 Digit password");
-                    binding.editTextPassword.requestFocus();
-                } else {
-                    binding.lblEmailAnswer.setText(loggedIn.getEmail());
-                    binding.lblPasswordAnswer.setText(loggedIn.getPassword());
-                }
-
-            }
-        });return binding.getRoot();
+        return binding.getRoot();
     }
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        savedStateHandle = Navigation.findNavController(view)
+                .getPreviousBackStackEntry()
+                .getSavedStateHandle();
+        savedStateHandle.set(LOGIN_SUCCESSFUL, false);
+        loginViewModel.loggedLiveData().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean aBoolean) {
+                if (loginViewModel.loggedLiveData().getValue() == true){
+                    Bundle bundle = new Bundle();
+                    bundle.putString("email", loginViewModel.getLogin().getValue().email);
+                    Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_homeFragment,bundle);
+                    savedStateHandle.set(LOGIN_SUCCESSFUL, true);
+                }
+            }
+        });
+    }
 }

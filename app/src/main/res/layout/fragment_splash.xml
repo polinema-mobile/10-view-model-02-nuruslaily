@@ -4,15 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
-            name="splashViewModel"
-            type="id.putraprima.mvvmlogin.viewmodels.SplashViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.SplashActivity$SplashFragment">
+        tools:context=".fragments.SplashFragment">
 
         <ImageView
             android:id="@+id/logo"
